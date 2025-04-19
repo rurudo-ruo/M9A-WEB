@@ -286,7 +286,6 @@
     "这里的和别处的一切，最终都会回到纯粹的数式之中。只是我还没能算出这个指向未来的式子……唔，目前的假设是……",
     "Everything in here and out there always leads to pure numbers and mathematics. It's only a matter of time until I work out the equation which foretells the future ... Hmm, the current assumption is ...",
   ];
-
   const tooltipEle = document.querySelector(".tooltip");
   const charEle = document.querySelector(".char");
   const charContainerEle = document.querySelector(".char-container");
@@ -330,6 +329,7 @@
     const tooltipHeight = tooltipEle.offsetHeight;
 
     const rect = charContainerEle.getBoundingClientRect();
+    const charRect = charEle.getBoundingClientRect();
 
     if (!isTouchDevice) {
       const mouseX = event.pageX;
@@ -349,7 +349,7 @@
       }
     } else {
       tooltipX = rect.left + rect.width / 2 - tooltipWidth / 2;
-      tooltipY = rect.bottom - tooltipHeight - 10;
+      tooltipY = charRect.bottom - tooltipHeight - 10;
     }
 
     if (!(event.type == "load" && !isTouchDevice)) {
@@ -429,7 +429,7 @@
       const spacingY = 2 * compareY;
       startX = startX + spacingX
       startY = startY - spacingY
-      if (startY > width || startY < 0) {
+      if (startX > width || startY < 0) {
         pos.new = [pos.default[0], height]
       } else {
         pos.new[0] = startX
@@ -463,12 +463,11 @@
         selectedPoints.push(point);
       }
     }
-
     return selectedPoints;
   }
 
 
-  const selectedPoints = randomPoints(width, 100, 10);
+  const selectedPoints = randomPoints(width, 100, width / 100 > 10 ? 10 : width / 100);
   startDraw(selectedPoints.map((x) => {
     return {
       default: [x, height - Math.floor(Math.random() * 201)],
