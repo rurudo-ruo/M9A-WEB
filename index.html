@@ -316,6 +316,10 @@
 
   function onCharClick() {
     document.body.classList.toggle("click");
+    if (isTouchDevice) {
+      // 关闭tooltip
+      mouseleave()
+    }
   }
 
   const throttledUpdateTooltip = throttle(() => {
