@@ -1,0 +1,26 @@
+{
+  "name": "m9a",
+  "version": "1.0.0",
+  "description": "",
+  "main": "md2html.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Night-stars-1/m9a-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Night-stars-1/m9a-web/issues"
+  },
+  "homepage": "https://github.com/Night-stars-1/m9a-web#readme",
+  "dependencies": {
+    "highlight.js": "^11.11.1",
+    "markdown-it": "^14.1.0",
+    "markdown-it-github-alerts": "^1.0.0"
+  }
+}

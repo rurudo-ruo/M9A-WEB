@@ -2,479 +2,369 @@
 <html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>M9A</title>
-  <style>
-    body {
-      height: 0px;
-      margin: 0px;
-      background-color: #191918;
-      background-image: url("./bg.webp");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M9A</title>
+    <style>
+        body {
+            height: 0px;
+            margin: 0px;
+            background-color: #191918;
+            background-image: url("./assets/image/bg.webp");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
-    /* 神秘学家容器 */
-    .char-container {
-      width: 48vw;
-      height: 90vh;
-      position: relative;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, 5%);
-      transition: transform 0.5s ease-in-out;
-    }
+        /* 神秘学家容器 */
+        .char-container {
+            width: 48vw;
+            height: 90vh;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 5%);
+            transition: transform 0.5s ease-in-out;
+        }
 
-    .char-bg,
-    .char {
-      position: absolute;
-      max-height: 80%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+        .char-bg,
+        .char {
+            position: absolute;
+            max-height: 80%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-    .char-bg {
-      z-index: -1;
-      transform: translate(-40%, -65%);
-    }
+        .char-bg {
+            z-index: -1;
+            transform: translate(-40%, -65%);
+        }
 
-    .click .char-container {
-      transform: translate(-105%, 5%);
-    }
+        .click .char-container {
+            transform: translate(-105%, 5%);
+        }
 
 
-    /* 内容容器 */
-    .container {
-      border-radius: 10px;
-      background-image: url("./container_bg.webp");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
+        /* 内容容器 */
+        .container {
+            border-radius: 10px;
+            background-image: url("/assets/image/container_bg.webp");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
 
-      /* min-width: 600px; */
-      width: 48%;
-      max-height: 90%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      /* 隐藏元素 */
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.5s ease-in-out, visibility 0.5s 0s, transform 0.5s ease-in-out;
-      overflow-y: auto;
-      z-index: -1;
+            /* min-width: 600px; */
+            width: 48%;
+            height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* 隐藏元素 */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s 0s, transform 0.5s ease-in-out;
+            /* overflow-y: auto; */
+            z-index: -1;
 
-      padding-inline: 16px;
-      box-shadow: 0px 0px 4px 1px rgb(0 0 0 / 42%);
-    }
+            /* padding-inline: 16px; */
+            box-shadow: 0px 0px 4px 1px rgb(0 0 0 / 42%);
+        }
 
-    .click .container {
-      opacity: 1;
-      visibility: visible;
-      transform: translate(-2%, -50%);
-    }
+        .click .container {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-2%, -50%);
+        }
 
-    /* 定义滚动条样式 */
-    .container::-webkit-scrollbar {
-      width: 4px;
-      height: 8px;
-    }
+        /* 定义滚动条样式 */
+        .container::-webkit-scrollbar {
+            width: 4px;
+            height: 8px;
+        }
 
-    /* 定义滚动条轨道样式 */
-    .container::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
+        /* 定义滚动条轨道样式 */
+        .container::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
 
-    /* 定义滚动条滑块样式 */
-    .container::-webkit-scrollbar-thumb {
-      background-color: transparent;
-      border-radius: 10px;
-    }
+        /* 定义滚动条滑块样式 */
+        .container::-webkit-scrollbar-thumb {
+            background-color: transparent;
+            border-radius: 10px;
+        }
 
-    /* 设置滚动条的边界 */
-    .container:hover::-webkit-scrollbar-thumb,
-    .container::-webkit-scrollbar-thumb:hover {
-      background-color: rgba(0, 0, 0, 0.3);
-    }
+        /* 设置滚动条的边界 */
+        .container:hover::-webkit-scrollbar-thumb,
+        .container::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
 
-    .tooltip {
-      background-color: rgba(0, 0, 0, 0.75);
-      color: #fff;
-      text-align: center;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 14px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 9999;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
+        .tooltip {
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
 
-      word-wrap: break-word;
-      white-space: pre-wrap;
-      max-width: 300px;
-    }
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            max-width: 300px;
+        }
 
-    a {
-      color: #5c6d91;
-      text-decoration: none;
-    }
 
-    a:not(:has(img))::before {
-      content: "【";
-      color: #5c6d91;
-    }
+        #bgCanvas {
+            position: absolute;
+            top: 0;
+            z-index: -999;
+        }
 
-    a:not(:has(img))::after {
-      content: "】";
-      color: #5c6d91;
-    }
+        @media (max-width: 768px) {
 
-    #bgCanvas {
-      position: absolute;
-      top: 0;
-      z-index: -999;
-    }
+            .char-bg,
+            .char {
+                max-width: 100%;
+            }
 
-    @media (max-width: 768px) {
+            .char-container {
+                width: 80vw;
+            }
 
-      .char-bg,
-      .char {
-        max-width: 100%;
-      }
+            .click .char-container {
+                opacity: 0;
+                visibility: hidden;
+            }
 
-      .char-container {
-        width: 80vw;
-      }
+            .container {
+                transform: translate(-50%, -50%);
+                width: 90%;
+            }
 
-      .click .char-container {
-        opacity: 0;
-        visibility: hidden;
-      }
-
-      .container {
-        transform: translate(-50%, -50%);
-        width: 90%;
-      }
-
-      .click .container {
-        transform: translate(-50%, -50%);
-      }
-    }
-  </style>
+            .click .container {
+                transform: translate(-50%, -50%);
+            }
+        }
+    </style>
+    <style>
+        iframe {
+            border: unset;
+        }
+    </style>
 </head>
 
 <body>
-  <canvas id="bgCanvas"></canvas>
-  <div class="char-container">
-    <img class="char" src="./char.webp" alt="人物"></img>
-    <img class="char-bg" src="./char_bg.webp" alt="人物背景"></img>
-  </div>
-  <div class="tooltip"></div>
-  <div class="container">
-    <article class="markdown-body entry-content container-lg" itemprop="text">
-      <div align="center" dir="auto">
-        <a target="_blank" rel="noopener noreferrer" href="https://github.com/MaaXYZ/M9A">
-          <img alt="LOGO" src="./logo.webp"
-            width="256" height="256" style="max-width: 100%" />
-        </a>
-        <div class="markdown-heading" dir="auto">
-          <h1 tabindex="-1" class="heading-element" dir="auto">
-            <a href="https://github.com/MaaXYZ/M9A">M9A</a>
-          </h1>
-        </div>
-        <p dir="auto">
-          基于全新架构的 亿韭韭韭 小助手。图像技术 + 模拟控制，解放双手！<br />
-          由
-          <a href="https://github.com/MaaXYZ/MaaFramework">MaaFramework</a>
-          强力驱动！
-        </p>
-      </div>
-      <p align="center" dir="auto">
-        <a target="_blank" rel="noopener noreferrer nofollow"
-          href="https://camo.githubusercontent.com/8fcae9489a7735d27e330314204770e961985dbdb5442f28701a1e10b4f0e38f/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f4d616158595a2f4d3941"><img
-            alt="license"
-            src="https://camo.githubusercontent.com/8fcae9489a7735d27e330314204770e961985dbdb5442f28701a1e10b4f0e38f/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f4d616158595a2f4d3941"
-            data-canonical-src="https://img.shields.io/github/license/MaaXYZ/M9A" style="max-width: 100%" /></a>
-        <a target="_blank" rel="noopener noreferrer nofollow"
-          href="https://camo.githubusercontent.com/8631004f94179b636f7cfec68f970c37927c95757a26fa656c58bc67015bc9f0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f507974686f6e2d3337373641423f6c6f676f3d707974686f6e266c6f676f436f6c6f723d7768697465"><img
-            alt="Python"
-            src="https://camo.githubusercontent.com/8631004f94179b636f7cfec68f970c37927c95757a26fa656c58bc67015bc9f0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f507974686f6e2d3337373641423f6c6f676f3d707974686f6e266c6f676f436f6c6f723d7768697465"
-            data-canonical-src="https://img.shields.io/badge/Python-3776AB?logo=python&amp;logoColor=white"
-            style="max-width: 100%" /></a>
-        <a target="_blank" rel="noopener noreferrer nofollow"
-          href="https://camo.githubusercontent.com/b54566fd5427f35c08db8b9ccf7fd0db4591e5bbae857521121686ea09e4951c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d57696e646f77732532302537432532304c696e75782532302537432532306d61634f532d626c756576696f6c6574"><img
-            alt="platform"
-            src="https://camo.githubusercontent.com/b54566fd5427f35c08db8b9ccf7fd0db4591e5bbae857521121686ea09e4951c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d57696e646f77732532302537432532304c696e75782532302537432532306d61634f532d626c756576696f6c6574"
-            data-canonical-src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-blueviolet"
-            style="max-width: 100%" /></a>
-        <a target="_blank" rel="noopener noreferrer nofollow"
-          href="https://camo.githubusercontent.com/8212c8bd6dd0c0e1774020af94cb5a3796e3bd3282c97c57ac45024f403d1456/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f636f6d6d69742d61637469766974792f6d2f4d616158595a2f4d3941"><img
-            alt="commit"
-            src="https://camo.githubusercontent.com/8212c8bd6dd0c0e1774020af94cb5a3796e3bd3282c97c57ac45024f403d1456/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f636f6d6d69742d61637469766974792f6d2f4d616158595a2f4d3941"
-            data-canonical-src="https://img.shields.io/github/commit-activity/m/MaaXYZ/M9A"
-            style="max-width: 100%" /></a>
-        <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/MaaXYZ/M9A"><img alt="stars"
-            src="https://camo.githubusercontent.com/ddf6e702fed0a2aa6927100174099259bf415c9d63801bdb2e06c21053164373/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f73746172732f4d616158595a2f4d39413f7374796c653d736f6369616c"
-            data-canonical-src="https://img.shields.io/github/stars/MaaXYZ/M9A?style=social"
-            style="max-width: 100%" /></a>
-      </p>
-      <div class="markdown-heading" dir="auto">
-        <h2 tabindex="-1" class="heading-element" dir="auto">功能列表</h2>
-      </div>
-      <ul dir="auto">
-        <li>启动/关闭游戏</li>
-        <li>切换账号</li>
-        <li>收取荒原、魔精收取生产物品</li>
-        <li>每日心相（意志解析）</li>
-        <li>刷体力、最优材料关卡、活动关卡、吃糖选项</li>
-        <li>自动深眠域</li>
-        <li>自动醒梦域</li>
-        <li>银行购物</li>
-        <li>领取日常奖励</li>
-        <li>当期轶事</li>
-        <li>雨中悬想：迷思海（"寻思"周扫荡）</li>
-        <li>局外演绎：山麓的回音（肉鸽）</li>
-      </ul>
-      <div class="markdown-heading" dir="auto">
-        <h2 tabindex="-1" class="heading-element" dir="auto">使用说明</h2>
-      </div>
-      <ul dir="auto">
-        <li>
-          <a
-            href="https://github.com/MaaXYZ/M9A/blob/main/docs/zh_cn/manual/%E6%96%B0%E6%89%8B%E4%B8%8A%E8%B7%AF.md">新手上路</a>(<strong>使用前必看</strong>)
-        </li>
-        <li>
-          <a
-            href="https://github.com/MaaXYZ/M9A/blob/main/docs/zh_cn/manual/%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D.md">功能介绍</a>
-        </li>
-        <li>
-          <a href="https://github.com/MaaXYZ/M9A/blob/main/docs/zh_cn/manual/MaaPiCli.md">MaaPiCli使用说明</a>
-        </li>
-        <li>
-          <a
-            href="https://github.com/MaaXYZ/M9A/blob/main/docs/zh_cn/manual/%E8%BF%9E%E6%8E%A5%E8%AE%BE%E7%BD%AE.md">连接设置</a>
-        </li>
-        <li>
-          <a
-            href="https://github.com/MaaXYZ/M9A/blob/main/docs/zh_cn/manual/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md">常见问题</a>
-        </li>
-        <li>
-          <a href="https://github.com/MaaXYZ/M9A/blob/main/docs/zh_cn/manual/Mirror%E9%85%B1.md">Mirror酱使用说明</a>
-        </li>
-      </ul>
-      <div class="markdown-heading" dir="auto">
-        <h2 tabindex="-1" class="heading-element" dir="auto">开发相关</h2>
-      </div>
-      <ul dir="auto">
-        <li>M9A 交流群 QQ 群：175638678</li>
-        <li>M9A 开发群 QQ 群：649344857</li>
-        <li>MaaFramework 开发交流 QQ 群: 595990173</li>
-      </ul>
-    </article>
-  </div>
+    <canvas id="bgCanvas"></canvas>
+    <div class="char-container">
+        <img class="char" src="./assets/image/char.webp" alt="人物"></img>
+        <img class="char-bg" src="./assets/image/char_bg.webp" alt="人物背景"></img>
+    </div>
+    <div class="tooltip"></div>
+    <iframe class="container" src="./README.html"></iframe>
 </body>
 <script>
-  const MessageList = [
-    "这里的和别处的一切，最终都会回到纯粹的数式之中。只是我还没能算出这个指向未来的式子……唔，目前的假设是……",
-    "Everything in here and out there always leads to pure numbers and mathematics. It's only a matter of time until I work out the equation which foretells the future ... Hmm, the current assumption is ...",
-  ];
-  const tooltipEle = document.querySelector(".tooltip");
-  const charEle = document.querySelector(".char");
-  const charContainerEle = document.querySelector(".char-container");
-  const charBgEle = document.querySelector(".char-bg");
-  const containerEle = document.querySelector(".container")
+    const MessageList = [
+        "这里的和别处的一切，最终都会回到纯粹的数式之中。只是我还没能算出这个指向未来的式子……唔，目前的假设是……",
+        "Everything in here and out there always leads to pure numbers and mathematics. It's only a matter of time until I work out the equation which foretells the future ... Hmm, the current assumption is ...",
+    ];
+    const tooltipEle = document.querySelector(".tooltip");
+    const charEle = document.querySelector(".char");
+    const charContainerEle = document.querySelector(".char-container");
+    const charBgEle = document.querySelector(".char-bg");
+    const containerEle = document.querySelector(".container")
 
-  function throttle(func, delay) {
-    let lastTime = 0;
+    function throttle(func, delay) {
+        let lastTime = 0;
 
-    return function (...args) {
-      const now = Date.now();
-      if (now - lastTime >= delay) {
-        lastTime = now;
-        func.apply(this, args);
-      }
-    };
-  }
-
-  const isTouchDevice = window.innerWidth < 768; 
-
-  charContainerEle.addEventListener("click", onCharClick);
-  charContainerEle.addEventListener("mousemove", mousemove);
-  charContainerEle.addEventListener("mouseleave", mouseleave);
-  charEle.addEventListener("load", mousemove);
-
-  function onCharClick() {
-    document.body.classList.toggle("click");
-    if (isTouchDevice) {
-      // 关闭tooltip
-      mouseleave()
-    }
-  }
-
-  const throttledUpdateTooltip = throttle(() => {
-    tooltipEle.innerHTML =
-      MessageList[Math.floor(Math.random() * MessageList.length)];
-  }, 300);
-  function mousemove(event) {
-    throttledUpdateTooltip();
-    let tooltipX, tooltipY;
-    const tooltipWidth = tooltipEle.offsetWidth;
-    const tooltipHeight = tooltipEle.offsetHeight;
-
-    const rect = charContainerEle.getBoundingClientRect();
-    const charRect = charEle.getBoundingClientRect();
-
-    if (!isTouchDevice) {
-      const mouseX = event.pageX;
-      const mouseY = event.pageY;
-
-      tooltipX = mouseX + 20;
-      tooltipY = mouseY + 20;
-
-      // 超出左半边
-      if (event.pageX > rect.left + rect.width / 2) {
-        tooltipX = mouseX - tooltipWidth - 10;
-      }
-
-      // 鼠标超出上半边
-      if (event.pageY > rect.top + rect.height / 2) {
-        tooltipY = mouseY - tooltipHeight - 10;
-      }
-    } else {
-      tooltipX = rect.left + rect.width / 2 - tooltipWidth / 2;
-      tooltipY = charRect.bottom - tooltipHeight - 10;
+        return function (...args) {
+            const now = Date.now();
+            if (now - lastTime >= delay) {
+                lastTime = now;
+                func.apply(this, args);
+            }
+        };
     }
 
-    if (!(event.type == "load" && !isTouchDevice)) {
-      // load 事件不处理PC端
-      tooltipEle.style.left = `${tooltipX}px`;
-      tooltipEle.style.top = `${tooltipY}px`;
+    const isTouchDevice = window.innerWidth < 768;
 
-      tooltipEle.style.opacity = "1";
-    }
-  }
-  function mouseleave(e) {
-    tooltipEle.style.opacity = "0";
-  }
+    charContainerEle.addEventListener("click", onCharClick);
+    charContainerEle.addEventListener("mousemove", mousemove);
+    charContainerEle.addEventListener("mouseleave", mouseleave);
+    charEle.addEventListener("load", mousemove);
 
-
-  let canvas = document.getElementById("bgCanvas");
-  let ctx = canvas.getContext("2d");
-  let width = window.innerWidth;
-  let height = window.innerHeight;
-  canvas.width = width;
-  canvas.height = height;
-  ctx.strokeStyle = "#383838";
-  ctx.lineWidth = 2;
-
-  // 绘制回溯雨
-  function drawLine(startX, startY, angle) {
-    const radian = angle * Math.PI / 180;
-
-    const segmentLength1 = 20;
-    const segmentLength2 = 60;
-    const segmentLength3 = 30;
-    const spacing = 10;
-
-    const compareX = Math.cos(radian)
-    const compareY = Math.sin(radian)
-
-    const spacingX = spacing * compareX;
-    const spacingY = spacing * compareY;
-
-    const deltaX1 = segmentLength1 * compareX;
-    const deltaY1 = segmentLength1 * compareY;
-    const deltaX2 = segmentLength2 * compareX;
-    const deltaY2 = segmentLength2 * compareY;
-    const deltaX3 = segmentLength3 * compareX;
-    const deltaY3 = segmentLength3 * compareY;
-
-    ctx.beginPath();
-
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(startX + deltaX1, startY - deltaY1);
-
-
-    ctx.moveTo(startX + deltaX1 + spacingX, startY - deltaY1 - spacingY);
-    ctx.lineTo(startX + deltaX1 + spacingX + deltaX2, startY - deltaY1 - spacingY - deltaY2);
-
-
-    ctx.moveTo(startX + deltaX1 + spacingX + deltaX2 + spacingX, startY - deltaY1 - spacingY - deltaY2 - spacingY);
-    ctx.lineTo(startX + deltaX1 + spacingX + deltaX2 + spacingX + deltaX3, startY - deltaY1 - spacingY - deltaY2 - spacingY - deltaY3);
-
-    ctx.stroke();
-  }
-
-  // 绘制回溯雨动画
-  function startDraw(posList) {
-    let newPosList = []
-    const angle = 70
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    posList.forEach((pos) => {
-      let startX = pos.new[0]
-      let startY = pos.new[1]
-      const radian = angle * Math.PI / 180;
-
-      const compareX = Math.cos(radian)
-      const compareY = Math.sin(radian)
-
-      const spacingX = 2 * compareX;
-      const spacingY = 2 * compareY;
-      startX = startX + spacingX
-      startY = startY - spacingY
-      if (startX > width || startY < 0) {
-        pos.new = [pos.default[0], height]
-      } else {
-        pos.new[0] = startX
-        pos.new[1] = startY
-      }
-      drawLine(pos.new[0], pos.new[1], angle);
-      newPosList.push(pos)
-    })
-
-    setTimeout(() => {
-      startDraw(newPosList)
-    }, 30)
-  }
-
-  // 生成随机点
-  function randomPoints(length, spacing, num) {
-    let points = [];
-
-    // 按间距生成分割点
-    for (let i = 0; i < length / spacing; i++) {
-      points.push(i * spacing);
+    function onCharClick() {
+        document.body.classList.toggle("click");
+        if (isTouchDevice) {
+            // 关闭tooltip
+            mouseleave()
+        }
     }
 
-    // 随机取点
-    let selectedPoints = [];
-    while (selectedPoints.length < num) {
-      const randomIndex = Math.floor(Math.random() * points.length);
-      const point = points[randomIndex];
+    const throttledUpdateTooltip = throttle(() => {
+        tooltipEle.innerHTML =
+            MessageList[Math.floor(Math.random() * MessageList.length)];
+    }, 300);
+    function mousemove(event) {
+        throttledUpdateTooltip();
+        let tooltipX, tooltipY;
+        const tooltipWidth = tooltipEle.offsetWidth;
+        const tooltipHeight = tooltipEle.offsetHeight;
 
-      if (!selectedPoints.includes(point)) {
-        selectedPoints.push(point);
-      }
+        const rect = charContainerEle.getBoundingClientRect();
+        const charRect = charEle.getBoundingClientRect();
+
+        if (!isTouchDevice) {
+            const mouseX = event.pageX;
+            const mouseY = event.pageY;
+
+            tooltipX = mouseX + 20;
+            tooltipY = mouseY + 20;
+
+            // 超出左半边
+            if (event.pageX > rect.left + rect.width / 2) {
+                tooltipX = mouseX - tooltipWidth - 10;
+            }
+
+            // 鼠标超出上半边
+            if (event.pageY > rect.top + rect.height / 2) {
+                tooltipY = mouseY - tooltipHeight - 10;
+            }
+        } else {
+            tooltipX = rect.left + rect.width / 2 - tooltipWidth / 2;
+            tooltipY = charRect.bottom - tooltipHeight - 10;
+        }
+
+        if (!(event.type == "load" && !isTouchDevice)) {
+            // load 事件不处理PC端
+            tooltipEle.style.left = `${tooltipX}px`;
+            tooltipEle.style.top = `${tooltipY}px`;
+
+            tooltipEle.style.opacity = "1";
+        }
     }
-    return selectedPoints;
-  }
-
-
-  const selectedPoints = randomPoints(width, 100, width / 100 > 10 ? 10 : width / 100);
-  startDraw(selectedPoints.map((x) => {
-    return {
-      default: [x, height - Math.floor(Math.random() * 201)],
-      new: [x, height - Math.floor(Math.random() * 201)]
+    function mouseleave(e) {
+        tooltipEle.style.opacity = "0";
     }
-  }))
+
+
+    let canvas = document.getElementById("bgCanvas");
+    let ctx = canvas.getContext("2d");
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    ctx.strokeStyle = "#383838";
+    ctx.lineWidth = 2;
+
+    // 绘制回溯雨
+    function drawLine(startX, startY, angle) {
+        const radian = angle * Math.PI / 180;
+
+        const segmentLength1 = 20;
+        const segmentLength2 = 60;
+        const segmentLength3 = 30;
+        const spacing = 10;
+
+        const compareX = Math.cos(radian)
+        const compareY = Math.sin(radian)
+
+        const spacingX = spacing * compareX;
+        const spacingY = spacing * compareY;
+
+        const deltaX1 = segmentLength1 * compareX;
+        const deltaY1 = segmentLength1 * compareY;
+        const deltaX2 = segmentLength2 * compareX;
+        const deltaY2 = segmentLength2 * compareY;
+        const deltaX3 = segmentLength3 * compareX;
+        const deltaY3 = segmentLength3 * compareY;
+
+        ctx.beginPath();
+
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + deltaX1, startY - deltaY1);
+
+
+        ctx.moveTo(startX + deltaX1 + spacingX, startY - deltaY1 - spacingY);
+        ctx.lineTo(startX + deltaX1 + spacingX + deltaX2, startY - deltaY1 - spacingY - deltaY2);
+
+
+        ctx.moveTo(startX + deltaX1 + spacingX + deltaX2 + spacingX, startY - deltaY1 - spacingY - deltaY2 - spacingY);
+        ctx.lineTo(startX + deltaX1 + spacingX + deltaX2 + spacingX + deltaX3, startY - deltaY1 - spacingY - deltaY2 - spacingY - deltaY3);
+
+        ctx.stroke();
+    }
+
+    // 绘制回溯雨动画
+    function startDraw(posList) {
+        let newPosList = []
+        const angle = 70
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        posList.forEach((pos) => {
+            let startX = pos.new[0]
+            let startY = pos.new[1]
+            const radian = angle * Math.PI / 180;
+
+            const compareX = Math.cos(radian)
+            const compareY = Math.sin(radian)
+
+            const spacingX = 2 * compareX;
+            const spacingY = 2 * compareY;
+            startX = startX + spacingX
+            startY = startY - spacingY
+            if (startX > width || startY < 0) {
+                pos.new = [pos.default[0], height]
+            } else {
+                pos.new[0] = startX
+                pos.new[1] = startY
+            }
+            drawLine(pos.new[0], pos.new[1], angle);
+            newPosList.push(pos)
+        })
+
+        setTimeout(() => {
+            startDraw(newPosList)
+        }, 30)
+    }
+
+    // 生成随机点
+    function randomPoints(length, spacing, num) {
+        let points = [];
+
+        // 按间距生成分割点
+        for (let i = 0; i < length / spacing; i++) {
+            points.push(i * spacing);
+        }
+
+        // 随机取点
+        let selectedPoints = [];
+        while (selectedPoints.length < num) {
+            const randomIndex = Math.floor(Math.random() * points.length);
+            const point = points[randomIndex];
+
+            if (!selectedPoints.includes(point)) {
+                selectedPoints.push(point);
+            }
+        }
+        return selectedPoints;
+    }
+
+
+    const selectedPoints = randomPoints(width, 100, width / 100 > 10 ? 10 : width / 100);
+    startDraw(selectedPoints.map((x) => {
+        return {
+            default: [x, height - Math.floor(Math.random() * 201)],
+            new: [x, height - Math.floor(Math.random() * 201)]
+        }
+    }))
 </script>
 
 </html>
