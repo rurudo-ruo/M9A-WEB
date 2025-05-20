@@ -37,10 +37,10 @@ md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
 
 function convertMd(file) {
   let mdContent = fs.readFileSync(file, "utf-8");
-  const start = mdContent.indexOf("## Star History")
+  const start = mdContent.indexOf("## Star History");
   if (start != -1) {
-    const end = mdContent.indexOf("</a>", start)
-    mdContent = mdContent.substring(0, start) + mdContent.substring(end)
+    const end = mdContent.indexOf("</a>", start);
+    mdContent = mdContent.substring(0, start) + mdContent.substring(end);
   }
   const html = md
     .render(mdContent)
@@ -49,7 +49,7 @@ function convertMd(file) {
       "https://github.com/user-attachments/assets/b8e4d737-d549-43f3-a2e7-a3727bf615a9",
       "/assets/image/logo.webp"
     ); // LOGO切换为该网站的链接;
-  const filePath = file.replace("md/", "").replace(".md", ".html");
+  const filePath = file.replace("md/", "dist/").replace(".md", ".html");
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(
     filePath,
@@ -85,6 +85,19 @@ function convertDir(dir) {
 
 function main() {
   convertDir(path.join(__dirname, "..", "md"));
+  fs.cpSync(
+    path.join(__dirname, "..", "assets"),
+    path.join(__dirname, "..", "dist", "assets"),
+    { recursive: true }
+  );
+  fs.cpSync(
+    path.join(__dirname, "..", "index.html"),
+    path.join(__dirname, "..", "dist", "index.html")
+  );
+  fs.cpSync(
+    path.join(__dirname, "..", "CNAME"),
+    path.join(__dirname, "..", "dist", "CNAME")
+  );
 }
 
 main();
