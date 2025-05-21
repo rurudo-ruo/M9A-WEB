@@ -38,7 +38,7 @@ md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   return self.renderToken(tokens, idx, options);
 };
 
-function convertMd(file) {
+function convertMd(file, baseDir) {
   let mdContent = fs.readFileSync(file, "utf-8");
   const start = mdContent.indexOf("## Star History");
   if (start != -1) {
@@ -52,8 +52,9 @@ function convertMd(file) {
       "https://github.com/user-attachments/assets/b8e4d737-d549-43f3-a2e7-a3727bf615a9",
       "/assets/image/logo.webp"
     ); // LOGO切换为该网站的链接;
-  const filePath = file.replace("md/", "dist/").replace(".md", ".html");
+  const filePath = file.replace(`${baseDir}/`, "dist/").replace(".md", ".html");
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  console.log(filePath, baseDir)
   fs.writeFileSync(
     filePath,
     `<!DOCTYPE html>
@@ -74,14 +75,14 @@ ${html}
   );
 }
 
-function convertDir(dir) {
+function convertDir(dir, baseDir) {
   fs.readdirSync(dir, {
     withFileTypes: true,
   }).forEach((dirent) => {
     if (dirent.isDirectory()) {
-      convertDir(path.join(dir, dirent.name));
+      convertDir(path.join(dir, dirent.name), baseDir);
     } else if (dirent.isFile() && dirent.name.endsWith(".md")) {
-      convertMd(path.join(dir, dirent.name).replaceAll("\\", "/"));
+      convertMd(path.join(dir, dirent.name).replaceAll("\\", "/"), baseDir);
     }
   });
 }
@@ -89,7 +90,7 @@ function convertDir(dir) {
 function main() {
   const filePath = argv[2]
     ?? path.join(__dirname, "..", "md");
-  convertDir(filePath);
+  convertDir(filePath, path.basename(filePath));
   fs.cpSync(
     path.join(__dirname, "..", "assets"),
     path.join(__dirname, "..", "dist", "assets"),
