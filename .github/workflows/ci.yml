@@ -1,16 +1,26 @@
 name: Push to gh-pages
 
 on:
+  workflow_run:
+    workflows: ["Track MD Changes"]
+    branches: [main]
+    types:
+      - completed
   workflow_dispatch:
 
 jobs:
-  commit:
+  gh-pages:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.2.2
+
+      - name: Checkout the M9A
+        uses: actions/checkout@v4.2.2
+        with:
+          repository: MAA1999/M9A
 
       - name: Set up node
         uses: actions/setup-node@v4.4.0
@@ -18,7 +28,7 @@ jobs:
       - run: npm install
 
       - name: Gen Html
-        run: node tools/md2html.js
+        run: node tools/md2html.js ./M9A
 
       - name: Push to gh-pages
         uses: peaceiris/actions-gh-pages@v4

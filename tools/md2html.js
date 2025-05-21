@@ -4,6 +4,7 @@ import MarkdownItGitHubAlerts from "markdown-it-github-alerts";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { argv } from "process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -84,7 +85,9 @@ function convertDir(dir) {
 }
 
 function main() {
-  convertDir(path.join(__dirname, "..", "md"));
+  const filePath = argv[2]
+    ?? path.join(__dirname, "..", "md");
+  convertDir(filePath);
   fs.cpSync(
     path.join(__dirname, "..", "assets"),
     path.join(__dirname, "..", "dist", "assets"),
