@@ -1,6 +1,7 @@
 import markdownit from "markdown-it";
 import hljs from "highlight.js";
 import MarkdownItGitHubAlerts from "markdown-it-github-alerts";
+import MarkdownItAnchor from "markdown-it-anchor";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -23,6 +24,7 @@ const md = markdownit({
   },
 });
 md.use(MarkdownItGitHubAlerts);
+md.use(MarkdownItAnchor);
 md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   const token = tokens[idx];
   const hrefIndex = token.attrIndex("href");
