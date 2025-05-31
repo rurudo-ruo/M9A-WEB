@@ -1,11 +1,8 @@
 name: Push to gh-pages
 
 on:
-  workflow_run:
-    workflows: ["Track MD Changes"]
-    branches: [main]
-    types:
-      - completed
+  repository_dispatch:
+    types: [md_changes]
   workflow_dispatch:
 
 jobs:
