@@ -201,7 +201,7 @@
         };
     }
 
-    const isTouchDevice = window.innerWidth < 768;
+    let isTouchDevice = window.outerWidth < 768;
 
     charContainerEle.addEventListener("click", onCharClick);
     charContainerEle.addEventListener("mousemove", mousemove);
@@ -261,18 +261,6 @@
     function mouseleave(e) {
         tooltipEle.style.opacity = "0";
     }
-
-    let Canvas = document.getElementById("bgCanvas");
-    let Ctx = Canvas.getContext("2d");
-    let Width = window.innerWidth;
-    let Height = window.innerHeight;
-    Canvas.width = Width;
-    Canvas.height = Height;
-    Ctx.strokeStyle = "#383838";
-    Ctx.lineWidth = 2;
-    let LastTime = 0;
-    const Angle = 70
-    const LinePos = calcLinePos(Angle)
 
     function calcLinePos(angle) {
         const radian = angle * Math.PI / 180;
@@ -355,13 +343,13 @@
     }
 
     // 绘制回溯雨动画
-    function startDraw(posList, timestamp) {
+    function startDraw(posList, angle, timestamp, linePos) {
         const deltaTime = timestamp - LastTime;
         LastTime = timestamp;
         let newPosList = []
         Ctx.clearRect(0, 0, Canvas.width, Canvas.height);
 
-        const [spacingX, spacingY] = calcDrawTime(100, Angle, deltaTime)
+        const [spacingX, spacingY] = calcDrawTime(100, angle, deltaTime)
 
         posList.forEach((pos) => {
             let startX = pos.new[0]
@@ -370,18 +358,18 @@
             startX = startX + spacingX
             startY = startY - spacingY
 
-            if (startX > Width + LinePos.x || startY < 0 - LinePos.y) {
+            if (startX > Canvas.width + linePos.x || startY < 0 - linePos.y) {
                 pos.new = [pos.default[0], pos.default[1]]
             } else {
                 pos.new[0] = startX
                 pos.new[1] = startY
             }
-            drawLine(pos.new[0], pos.new[1], LinePos);
+            drawLine(pos.new[0], pos.new[1], linePos);
             newPosList.push(pos)
         })
 
         requestAnimationFrame((t) => {
-            startDraw(newPosList, t)
+            startDraw(newPosList, angle, t, linePos)
         })
     }
 
@@ -418,15 +406,38 @@
         return selectedPoints;
     }
 
-    const selectedPoints = randomPoints(Width, 100, 10, 200);
-    requestAnimationFrame((t) => {
-        startDraw(selectedPoints.map((x) => {
-            return {
-                default: [x, Height + Math.floor(Math.random() * 201)],
-                new: [x, Height + Math.floor(Math.random() * 201)]
-            }
-        }), t)
-    })
+    let Canvas = document.getElementById("bgCanvas");
+    let Ctx = Canvas.getContext("2d");
+    let LastTime = 0;
+
+    function initDraw() {
+        const width = document.documentElement.clientWidth;
+        console.log(width)
+        const height = document.documentElement.clientHeight;
+        Canvas.width = width;
+        Canvas.height = height;
+        Ctx.strokeStyle = "#383838";
+        Ctx.lineWidth = 2;
+        const angle = 70
+        const linePos = calcLinePos(angle)
+        const selectedPoints = randomPoints(width, 100, 10, 200);
+        requestAnimationFrame((t) => {
+            startDraw(selectedPoints.map((x) => {
+                return {
+                    default: [x, height + Math.floor(Math.random() * 201)],
+                    new: [x, height + Math.floor(Math.random() * 201)]
+                }
+            }), angle, t, linePos)
+        })
+    }
+    initDraw()
+    window.addEventListener('resize', function () {
+        initDraw();
+        isTouchDevice = window.outerWidth < 768;
+        mousemove({
+            type: "laod"
+        });
+    });
 </script>
 
 </html>
