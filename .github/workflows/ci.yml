@@ -4,6 +4,7 @@ on:
   repository_dispatch:
     types: [md_changes]
   workflow_dispatch:
+  push:
 
 jobs:
   gh-pages:
