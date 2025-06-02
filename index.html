@@ -44,7 +44,25 @@
         .click .char-container {
             transform: translate(-105%, 5%);
         }
+        @media (max-width: 768px) {
+            .char-bg,
+            .char {
+                max-width: 100%;
+            }
+            .char {
+                position: unset;
+                transform: unset;
+            }
+            .char-container {
+                width: 80vw;
+                height: max-content;
+                transform: translate(-50%, 25%);
+            }
 
+            .click .char-container {
+                display: none;
+            }
+        }
 
         /* 内容容器 */
         .container {
@@ -130,21 +148,6 @@
         }
 
         @media (max-width: 768px) {
-
-            .char-bg,
-            .char {
-                max-width: 100%;
-            }
-
-            .char-container {
-                width: 80vw;
-            }
-
-            .click .char-container {
-                opacity: 0;
-                visibility: hidden;
-            }
-
             .container {
                 transform: translate(-50%, -50%);
                 width: 90%;
