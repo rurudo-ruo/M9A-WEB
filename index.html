@@ -160,6 +160,13 @@
             .click .container {
                 transform: translate(-50%, -50%);
             }
+
+            .tooltip {
+                top: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                width: max-content;
+            }
         }
     </style>
     <style>
@@ -176,7 +183,7 @@
         <img class="char-bg" src="./assets/image/char_bg.webp" alt="人物背景"></img>
     </div>
     <div class="tooltip"></div>
-    <iframe class="container" src="./README.html"></iframe>
+    <iframe class="container" src="./dist/README.html"></iframe>
 </body>
 <script>
     const MessageList = [
@@ -206,7 +213,7 @@
     charContainerEle.addEventListener("click", onCharClick);
     charContainerEle.addEventListener("mousemove", mousemove);
     charContainerEle.addEventListener("mouseleave", mouseleave);
-    charEle.addEventListener("load", mousemove);
+    charEle.addEventListener("load", onloadToolTip);
 
     function onCharClick() {
         document.body.classList.toggle("click");
@@ -220,7 +227,20 @@
         tooltipEle.innerHTML =
             MessageList[Math.floor(Math.random() * MessageList.length)];
     }, 300);
+    function onloadToolTip() {
+        if (isTouchDevice) {
+            throttledUpdateTooltip();
+            tooltipEle.removeAttribute('style');
+            tooltipEle.style.opacity = "1";
+            return
+        } else {
+            tooltipEle.style.display = "none";
+            tooltipEle.style.opacity = "0";
+        }
+    }
+
     function mousemove(event) {
+        tooltipEle.style.removeProperty("display");
         throttledUpdateTooltip();
         let tooltipX, tooltipY;
         const tooltipWidth = tooltipEle.offsetWidth;
@@ -229,34 +249,27 @@
         const rect = charContainerEle.getBoundingClientRect();
         const charRect = charEle.getBoundingClientRect();
 
-        if (!isTouchDevice) {
-            const mouseX = event.pageX;
-            const mouseY = event.pageY;
+        const mouseX = event.pageX;
+        const mouseY = event.pageY;
 
-            tooltipX = mouseX + 20;
-            tooltipY = mouseY + 20;
+        tooltipX = mouseX + 20;
+        tooltipY = mouseY + 20;
 
-            // 超出左半边
-            if (event.pageX > rect.left + rect.width / 2) {
-                tooltipX = mouseX - tooltipWidth - 10;
-            }
-
-            // 鼠标超出上半边
-            if (event.pageY > rect.top + rect.height / 2) {
-                tooltipY = mouseY - tooltipHeight - 10;
-            }
-        } else {
-            tooltipX = rect.left + rect.width / 2 - tooltipWidth / 2;
-            tooltipY = charRect.bottom - tooltipHeight - 10;
+        // 超出左半边
+        if (event.pageX > rect.left + rect.width / 2) {
+            tooltipX = mouseX - tooltipWidth - 10;
         }
 
-        if (!(event.type == "load" && !isTouchDevice)) {
-            // load 事件不处理PC端
-            tooltipEle.style.left = `${tooltipX}px`;
-            tooltipEle.style.top = `${tooltipY}px`;
-
-            tooltipEle.style.opacity = "1";
+        // 鼠标超出上半边
+        if (event.pageY > rect.top + rect.height / 2) {
+            tooltipY = mouseY - tooltipHeight - 10;
         }
+
+        // load 事件不处理PC端
+        tooltipEle.style.left = `${tooltipX}px`;
+        tooltipEle.style.top = `${tooltipY}px`;
+
+        tooltipEle.style.opacity = "1";
     }
     function mouseleave(e) {
         tooltipEle.style.opacity = "0";
@@ -412,7 +425,6 @@
 
     function initDraw() {
         const width = document.documentElement.clientWidth;
-        console.log(width)
         const height = document.documentElement.clientHeight;
         Canvas.width = width;
         Canvas.height = height;
@@ -434,9 +446,7 @@
     window.addEventListener('resize', function () {
         initDraw();
         isTouchDevice = window.outerWidth < 768;
-        mousemove({
-            type: "laod"
-        });
+        onloadToolTip();
     });
 </script>
 
