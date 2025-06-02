@@ -44,15 +44,19 @@
         .click .char-container {
             transform: translate(-105%, 5%);
         }
+
         @media (max-width: 768px) {
+
             .char-bg,
             .char {
                 max-width: 100%;
             }
+
             .char {
                 position: unset;
                 transform: unset;
             }
+
             .char-container {
                 width: 80vw;
                 height: max-content;
@@ -258,18 +262,19 @@
         tooltipEle.style.opacity = "0";
     }
 
+    let Canvas = document.getElementById("bgCanvas");
+    let Ctx = Canvas.getContext("2d");
+    let Width = window.innerWidth;
+    let Height = window.innerHeight;
+    Canvas.width = Width;
+    Canvas.height = Height;
+    Ctx.strokeStyle = "#383838";
+    Ctx.lineWidth = 2;
+    let LastTime = 0;
+    const Angle = 70
+    const LinePos = calcLinePos(Angle)
 
-    let canvas = document.getElementById("bgCanvas");
-    let ctx = canvas.getContext("2d");
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-    ctx.strokeStyle = "#383838";
-    ctx.lineWidth = 2;
-
-    // 绘制回溯雨
-    function drawLine(startX, startY, angle) {
+    function calcLinePos(angle) {
         const radian = angle * Math.PI / 180;
 
         const segmentLength1 = 20;
@@ -289,62 +294,115 @@
         const deltaY2 = segmentLength2 * compareY;
         const deltaX3 = segmentLength3 * compareX;
         const deltaY3 = segmentLength3 * compareY;
+        return {
+            spacingX,
+            spacingY,
+            deltaX1,
+            deltaY1,
+            deltaX2,
+            deltaY2,
+            deltaX3,
+            deltaY3,
+            x: deltaX1 + deltaX2 + deltaX3,
+            y: deltaY1 + deltaY2 + deltaY3
+        }
+    }
 
-        ctx.beginPath();
+    // 绘制回溯雨
+    function drawLine(startX, startY, linePos) {
+        Ctx.beginPath();
 
-        ctx.moveTo(startX, startY);
-        ctx.lineTo(startX + deltaX1, startY - deltaY1);
+        startX -= linePos.x
+        startY += linePos.y
+        Ctx.moveTo(startX, startY);
+        startX += linePos.deltaX1
+        startY -= linePos.deltaY1
+        Ctx.lineTo(startX, startY);
+
+        startX += linePos.spacingX
+        startY -= linePos.spacingY
+        Ctx.moveTo(startX, startY);
+        startX += linePos.deltaX2
+        startY -= linePos.deltaY2
+        Ctx.lineTo(startX, startY);
 
 
-        ctx.moveTo(startX + deltaX1 + spacingX, startY - deltaY1 - spacingY);
-        ctx.lineTo(startX + deltaX1 + spacingX + deltaX2, startY - deltaY1 - spacingY - deltaY2);
+        startX += linePos.spacingX
+        startY -= linePos.spacingY
+        Ctx.moveTo(startX, startY);
+        startX += linePos.deltaX3
+        startY -= linePos.deltaY3
+        Ctx.lineTo(startX, startY);
 
+        Ctx.stroke();
+    }
 
-        ctx.moveTo(startX + deltaX1 + spacingX + deltaX2 + spacingX, startY - deltaY1 - spacingY - deltaY2 - spacingY);
-        ctx.lineTo(startX + deltaX1 + spacingX + deltaX2 + spacingX + deltaX3, startY - deltaY1 - spacingY - deltaY2 - spacingY - deltaY3);
+    /**
+     * 计算绘制时间
+     * @param {number} speed 像素/秒
+     * @param {number} angle
+     * @param {number} deltaTime 间隔时间
+     */
+    function calcDrawTime(speed, angle, deltaTime) {
+        const radian = angle * Math.PI / 180;
 
-        ctx.stroke();
+        const compareX = Math.cos(radian)
+        const compareY = Math.sin(radian)
+
+        const spacingX = (speed * deltaTime / 1000) * compareX;
+        const spacingY = (speed * deltaTime / 1000) * compareY;
+        return [spacingX, spacingY]
     }
 
     // 绘制回溯雨动画
-    function startDraw(posList) {
+    function startDraw(posList, timestamp) {
+        const deltaTime = timestamp - LastTime;
+        LastTime = timestamp;
         let newPosList = []
-        const angle = 70
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        Ctx.clearRect(0, 0, Canvas.width, Canvas.height);
+
+        const [spacingX, spacingY] = calcDrawTime(100, Angle, deltaTime)
+
         posList.forEach((pos) => {
             let startX = pos.new[0]
             let startY = pos.new[1]
-            const radian = angle * Math.PI / 180;
 
-            const compareX = Math.cos(radian)
-            const compareY = Math.sin(radian)
-
-            const spacingX = 2 * compareX;
-            const spacingY = 2 * compareY;
             startX = startX + spacingX
             startY = startY - spacingY
-            if (startX > width || startY < 0) {
-                pos.new = [pos.default[0], height]
+
+            if (startX > Width + LinePos.x || startY < 0 - LinePos.y) {
+                pos.new = [pos.default[0], pos.default[1]]
             } else {
                 pos.new[0] = startX
                 pos.new[1] = startY
             }
-            drawLine(pos.new[0], pos.new[1], angle);
+            drawLine(pos.new[0], pos.new[1], LinePos);
             newPosList.push(pos)
         })
 
-        setTimeout(() => {
-            startDraw(newPosList)
-        }, 30)
+        requestAnimationFrame((t) => {
+            startDraw(newPosList, t)
+        })
     }
 
-    // 生成随机点
-    function randomPoints(length, spacing, num) {
+    /**
+     * 生成随机点
+     * @param {number} length
+     * @param {number} spacing
+     * @param {number} num
+     * @param {number} expand length(x)向左扩展的大小
+     * @returns 返回的x坐标列表，改列表减去了expand
+     */
+    function randomPoints(length, spacing, num, expand) {
         let points = [];
+        const legalNum = (length + expand) / spacing
+        if (legalNum < num) {
+            num = legalNum
+        }
 
         // 按间距生成分割点
-        for (let i = 0; i < length / spacing; i++) {
-            points.push(i * spacing);
+        for (let i = 0; i < legalNum; i++) {
+            points.push(i * spacing - expand);
         }
 
         // 随机取点
@@ -360,14 +418,15 @@
         return selectedPoints;
     }
 
-
-    const selectedPoints = randomPoints(width, 100, width / 100 > 10 ? 10 : width / 100);
-    startDraw(selectedPoints.map((x) => {
-        return {
-            default: [x, height - Math.floor(Math.random() * 201)],
-            new: [x, height - Math.floor(Math.random() * 201)]
-        }
-    }))
+    const selectedPoints = randomPoints(Width, 100, 10, 200);
+    requestAnimationFrame((t) => {
+        startDraw(selectedPoints.map((x) => {
+            return {
+                default: [x, Height + Math.floor(Math.random() * 201)],
+                new: [x, Height + Math.floor(Math.random() * 201)]
+            }
+        }), t)
+    })
 </script>
 
 </html>
