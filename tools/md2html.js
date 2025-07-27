@@ -33,6 +33,8 @@ md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   if (/^https?:\/\//.test(href)) {
     token.attrPush(["target", "_top"]);
     token.attrPush(["rel", "noopener noreferrer"]);
+  } else if (href.includes(".md") && (href.startsWith(".") || href.startsWith("/"))) {
+    tokens[idx].attrs[hrefIndex][1] = href.replace(".md", ".html?iframe");
   }
 
   return self.renderToken(tokens, idx, options);
@@ -62,6 +64,7 @@ function convertMd(file, baseDir) {
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/assets/js/iframe.js"></script>
     <link rel="stylesheet" href="/assets/css/markdown.css">
     <link rel="stylesheet" href="/assets/css/github-markdown-light.css">
 </head>
