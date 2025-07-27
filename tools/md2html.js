@@ -20,11 +20,15 @@ const md = markdownit({
       } catch (__) {}
     }
 
-    return ""; // use external default escaping
+    return "";
   },
 });
 md.use(MarkdownItGitHubAlerts);
-md.use(MarkdownItAnchor);
+md.use(MarkdownItAnchor, {
+  getTokensText: (tokens) => {
+    return tokens[0].content.replaceAll(".", "")
+  },
+});
 md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   const token = tokens[idx];
   const hrefIndex = token.attrIndex("href");
@@ -33,7 +37,10 @@ md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   if (/^https?:\/\//.test(href)) {
     token.attrPush(["target", "_top"]);
     token.attrPush(["rel", "noopener noreferrer"]);
-  } else if (href.includes(".md") && (href.startsWith(".") || href.startsWith("/"))) {
+  } else if (
+    href.includes(".md") &&
+    (href.startsWith(".") || href.startsWith("/"))
+  ) {
     tokens[idx].attrs[hrefIndex][1] = href.replace(".md", ".html?iframe");
   }
 
@@ -56,7 +63,7 @@ function convertMd(file, baseDir) {
     ); // LOGO切换为该网站的链接;
   const filePath = file.replace(`${baseDir}/`, "dist/").replace(".md", ".html");
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  console.log(filePath, baseDir)
+  console.log(filePath, baseDir);
   fs.writeFileSync(
     filePath,
     `<!DOCTYPE html>
@@ -92,8 +99,7 @@ function convertDir(dir, baseDir) {
 }
 
 function main() {
-  const filePath = argv[2]
-    ?? path.join(__dirname, "..", "md");
+  const filePath = argv[2] ?? path.join(__dirname, "..", "md");
   convertDir(filePath, path.basename(filePath));
   fs.cpSync(
     path.join(__dirname, "..", "assets"),
