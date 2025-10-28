@@ -4,8 +4,6 @@ import { defineClientConfig } from 'vuepress/client'
 // import NpmBadgeGroup from 'vuepress-theme-plume/features/NpmBadgeGroup.vue'
 // import Swiper from 'vuepress-theme-plume/features/Swiper.vue'
 
-import Redirect from './components/Redirect.vue'
-
 // import './theme/styles/custom.css'
 // import './styles/home-custom.scss'
 
@@ -21,6 +19,10 @@ export default defineClientConfig({
 
     // your custom components
     // app.component('CustomComponent', CustomComponent)
-    app.component('Redirect', Redirect)
+    
+    // 延迟注册 Redirect 组件以避免初始化冲突
+    import('./components/Redirect.vue').then((module) => {
+      app.component('Redirect', module.default)
+    })
   },
 })

@@ -11,14 +11,14 @@ export const locales: Locale[] = [
     name: 'zh_cn',
     // displayName: '简体中文',
     htmlLang: 'zh-CN',
-    siteTitle: 'MAA 文档站',
+    siteTitle: 'M9A 文档站',
     siteDescription: '文档',
   },
   {
     name: 'en_us',
     // displayName: 'English',
     htmlLang: 'en-US',
-    siteTitle: 'MAA Documentation Site',
+    siteTitle: 'M9A Documentation Site',
     siteDescription: 'Documentation',
   },
 ]
