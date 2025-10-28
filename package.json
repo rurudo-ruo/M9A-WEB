@@ -1,0 +1,35 @@
+{
+  "name": "m9a-docs",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "M9A —「亿韭韭韭」小助手",
+  "packageManager": "pnpm@10.19.0",
+  "author": "Windsland52 <86581225+Windsland52@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "docs:build": "vuepress build docs --clean-cache --clean-temp",
+    "docs:dev": "vuepress dev docs",
+    "docs:dev-clean": "vuepress dev docs --clean-cache --clean-temp",
+    "docs:preview": "http-server docs/.vuepress/dist",
+    "vp-update": "pnpm dlx vp-update"
+  },
+  "devDependencies": {
+    "@vue/runtime-core": "^3.5.22",
+    "@vuepress/bundler-vite": "2.0.0-rc.26",
+    "http-server": "^14.1.1",
+    "sass-embedded": "^1.93.2",
+    "typescript": "^5.9.3",
+    "vue": "^3.5.22",
+    "vuepress": "2.0.0-rc.26",
+    "vuepress-theme-plume": "1.0.0-rc.174"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild"
+    ]
+  },
+  "engines": {
+    "node": "^20.6.0 || >=22.0.0"
+  }
+}

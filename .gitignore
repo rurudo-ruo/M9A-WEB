@@ -1,5 +1,7 @@
-node_modules
-*html
-!index.html
-dist
-md
+node_modules/
+dist/
+.cache/
+.temp/
+
+*.md
+!/README.md
