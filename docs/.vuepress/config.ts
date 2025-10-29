@@ -147,17 +147,17 @@ export default defineUserConfig({
      * 评论 comments
      * @see https://theme-plume.vuejs.press/guide/features/comments/
      */
-    // comment: {
-    //   provider: '', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
-    //   comment: true,
-    //   repo: '',
-    //   repoId: '',
-    //   category: '',
-    //   categoryId: '',
-    //   mapping: 'pathname',
-    //   reactionsEnabled: true,
-    //   inputPosition: 'top',
-    // },
+    comment: {
+      provider: 'Giscus', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
+      comment: true,
+      repo: 'MAA1999/M9A-WEB',
+      repoId: 'R_kgDOOcSJIg',
+      category: 'Announcements',
+      categoryId: 'DIC_kwDOOcSJIs4CxNjx',
+      mapping: 'pathname',
+      reactionsEnabled: true,
+      inputPosition: 'bottom',
+    },
 
     /**
      * 资源链接替换
