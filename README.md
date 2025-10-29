@@ -1,6 +1,7 @@
 # M9A-WEB
 
-M9A 文档站。本项目负责存放图片和构建部署文档站，若想修改文档内容请到 [M9A](https://github.com/MAA1999/M9A/docs)
+M9A 文档站。本项目负责存放图片和构建部署文档站，若想修改文档内容请到 [M9A](https://github.com/MAA1999/M9A/docs)  
+文档站使用 [Plume 主题](https://theme-plume.vuejs.press/guide/intro/)
 
 开发与本地运行：
 
