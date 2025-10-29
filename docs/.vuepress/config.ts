@@ -156,7 +156,7 @@ export default defineUserConfig({
       categoryId: 'DIC_kwDOOcSJIs4CxNjx',
       mapping: 'pathname',
       reactionsEnabled: true,
-      inputPosition: 'bottom',
+      inputPosition: 'top',
     },
 
     /**
